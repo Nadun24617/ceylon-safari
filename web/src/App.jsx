@@ -6,7 +6,7 @@ function App() {
   return (
     <>
       <Navbar />
-      <main className="">
+      <main className="w-full">
         <AppRoutes />
       </main>
     </>
