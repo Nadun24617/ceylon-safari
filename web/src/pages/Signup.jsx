@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { FaUser, FaEnvelope, FaPassport, FaLock } from "react-icons/fa";
 
 const Signup = () => {
+  const navigate = useNavigate(); // for redirection
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -15,84 +17,131 @@ const Signup = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Tourist Signup Data:", formData);
-    // Submit to backend here
+
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    try {
+      // Simulate backend request (you can later replace this with fetch/axios)
+      console.log("Signup Data:", formData);
+
+      // Simulate success redirect
+      alert("Signup successful!");
+      navigate("/login"); // redirect to login
+    } catch (error) {
+      alert("Something went wrong. Please try again.");
+      console.error(error);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-white flex items-center justify-center px-4">
-      <div className="bg-white p-8 rounded-2xl shadow-2xl max-w-md w-full">
-        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-          Tourist Sign Up
+    <div className="min-h-screen bg-gradient-to-r from-blue-200 via-white to-blue-100 flex items-center justify-center px-4 py-10">
+      <div className="bg-white shadow-2xl rounded-3xl p-10 w-full max-w-xl transition-transform duration-300 transform hover:scale-105">
+        <h2 className="text-3xl font-extrabold text-center text-blue-700 mb-6">
+          🌍 Tourist Sign-Up
         </h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="text"
-            name="fullName"
-            placeholder="Full Name"
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            onChange={handleChange}
-            required
-          />
-          <select
-            name="country"
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select Country</option>
-            <option>Sri Lanka</option>
-            <option>India</option>
-            <option>UK</option>
-            <option>USA</option>
-            <option>Australia</option>
-            <option>Germany</option>
-            {/* Add more countries as needed */}
-          </select>
-          <input
-            type="text"
-            name="passport"
-            placeholder="Passport Number"
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirm Password"
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            onChange={handleChange}
-            required
-          />
+
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Full Name */}
+          <div className="relative">
+            <FaUser className="absolute left-3 top-3 text-blue-500" />
+            <input
+              type="text"
+              name="fullName"
+              placeholder="Full Name"
+              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none"
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          {/* Email */}
+          <div className="relative">
+            <FaEnvelope className="absolute left-3 top-3 text-blue-500" />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email Address"
+              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none"
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          {/* Country */}
+          <div className="relative">
+            <select
+              name="country"
+              className="w-full appearance-none px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none"
+              onChange={handleChange}
+              required
+            >
+              <option value="">🌐 Select Country</option>
+              <option value="Sri Lanka">🇱🇰 Sri Lanka</option>
+              <option value="India">🇮🇳 India</option>
+              <option value="United States">🇺🇸 United States</option>
+              <option value="United Kingdom">🇬🇧 United Kingdom</option>
+              <option value="Germany">🇩🇪 Germany</option>
+              <option value="Australia">🇦🇺 Australia</option>
+              <option value="France">🇫🇷 France</option>
+            </select>
+          </div>
+
+          {/* Passport */}
+          <div className="relative">
+            <FaPassport className="absolute left-3 top-3 text-blue-500" />
+            <input
+              type="text"
+              name="passport"
+              placeholder="Passport Number"
+              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none"
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          {/* Password */}
+          <div className="relative">
+            <FaLock className="absolute left-3 top-3 text-blue-500" />
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none"
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          {/* Confirm Password */}
+          <div className="relative">
+            <FaLock className="absolute left-3 top-3 text-blue-500" />
+            <input
+              type="password"
+              name="confirmPassword"
+              placeholder="Confirm Password"
+              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none"
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+            className="w-full bg-blue-600 text-white py-3 rounded-xl text-lg font-semibold hover:bg-blue-700 transition-all duration-300 shadow-md"
           >
-            Create Account
+            Sign Up
           </button>
-          <p className="text-sm text-center text-gray-600 mt-2">
+
+          <p className="text-center text-sm text-gray-600 mt-4">
             Already have an account?{" "}
-            <Link to="/login" className="text-blue-600 hover:underline">
-              Login here
+            <Link to="/login" className="text-blue-600 font-medium hover:underline">
+              Login
             </Link>
           </p>
         </form>
