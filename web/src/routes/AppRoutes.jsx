@@ -3,6 +3,7 @@ import Home from '../pages/Home';
 import PageNotFound from '../pages/PageNotFound';
 import Map from '../pages/Map';
 import Accommodation from '../pages/Accommodation';
+import WeatherCard from '../pages/Weather';
 
 const AppRoutes = () => {
   return (
@@ -11,6 +12,7 @@ const AppRoutes = () => {
       <Route path="*" element={<PageNotFound />} />
       <Route path="/map" element={<Map />} />
       <Route path="/accommodation" element={<Accommodation />} />
+      <Route path="/weather" element={<WeatherCard />} />
     </Routes>
   );
 };
