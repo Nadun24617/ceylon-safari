@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { color, motion } from "framer-motion";
 
 const WeatherCard = () => {
   const [city, setCity] = useState("Colombo");
@@ -56,12 +56,12 @@ const WeatherCard = () => {
   return (
     <div style={styles.background}>
       <motion.div
-        initial={{ opacity: 0, y: 60 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.8 }}
         style={styles.card}
       >
-        <h2 style={{ color: "#fff" }}>🌍 Weather Forecast</h2>
+        <h2 style={styles.heading}>🌍 Weather Forecast</h2>
 
         <div style={styles.controls}>
           <select onChange={handleCityChange} value={city} style={styles.select}>
@@ -80,21 +80,23 @@ const WeatherCard = () => {
 
         {!loading && weather && (
           <motion.div
-            initial={{ scale: 0.9 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.5 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
             style={styles.text}
           >
-            <h3>{weather.name}, {weather.sys.country}</h3>
-            <p><strong>{weather.weather[0].main} - {weather.weather[0].description}</strong></p>
+            <h3 style={styles.location}>{weather.name}, {weather.sys.country}</h3>
+            <p style={styles.description}>
+              <strong>{weather.weather[0].main} - {weather.weather[0].description}</strong>
+            </p>
             <img
-              src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
+              src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@4x.png`}
               alt="weather icon"
-              style={{ width: "100px" }}
+              style={{ width: "120px" }}
             />
-            <p>🌡️ Temp: {weather.main.temp} °C</p>
-            <p>💧 Humidity: {weather.main.humidity} %</p>
-            <p>🌬️ Wind: {weather.wind.speed} m/s</p>
+            <p>🌡️ Temp: <strong>{weather.main.temp} °C</strong></p>
+            <p>💧 Humidity: <strong>{weather.main.humidity}%</strong></p>
+            <p>🌬️ Wind: <strong>{weather.wind.speed} m/s</strong></p>
           </motion.div>
         )}
 
@@ -116,16 +118,18 @@ const styles = {
     justifyContent: "center",
   },
   card: {
-    backdropFilter: "blur(12px)",
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
-    padding: "30px",
-    borderRadius: "20px",
-    boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
+    backdropFilter: "blur(16px)",
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
+    padding: "50px",
+    borderRadius: "24px",
+    boxShadow: "0 12px 40px rgba(0, 0, 0, 0.6)",
     textAlign: "center",
     color: "#fff",
     width: "100%",
-    maxWidth: "480px",
+    maxWidth: "600px",
+    animation: "pulse 3s ease-in-out infinite",
   },
+
   controls: {
     display: "flex",
     flexWrap: "wrap",
@@ -138,6 +142,7 @@ const styles = {
     borderRadius: "8px",
     fontSize: "16px",
     border: "none",
+    color: "#333",
   },
   button: {
     padding: "10px 16px",
