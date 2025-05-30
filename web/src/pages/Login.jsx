@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaUser, FaLock } from "react-icons/fa";
+import { FaUser, FaLock, FaSpinner } from "react-icons/fa";
 import { HiEye, HiEyeOff } from "react-icons/hi";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -13,28 +15,72 @@ const Login = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
     setError("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError("");
 
-    const { username, password } = formData;
+    // Basic client-side validation
+    if (!formData.username.trim() || !formData.password.trim()) {
+      setError("Please fill in all fields");
+      setLoading(false);
+      return;
+    }
 
-    if (username === "admin" && password === "admin") {
-      navigate("/home");
-    } else {
-      setError("Invalid username or password");
+    try {
+      const response = await fetch("http://localhost:5000/api/tourists/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: formData.username,
+          password: formData.password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Store user data in localStorage or context
+        localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.setItem("token", data.token); // If using JWT
+        
+        toast.success("Login successful!", {
+          position: "top-right",
+          autoClose: 2000,
+        });
+        
+        navigate("/home");
+      } else {
+        setError(data.message || "Login failed. Please try again.");
+        toast.error(data.message || "Login failed", {
+          position: "top-right",
+        });
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      setError("Server error. Please try again later.");
+      toast.error("Server error. Please try again later.", {
+        position: "top-right",
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-200 via-white to-blue-100 p-4">
-      <div className="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-md hover:scale-105 transition-transform">
-        <h2 className="text-3xl font-bold text-center text-blue-700 mb-6">🔐 Admin Login</h2>
+      <div className="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-md hover:scale-105 transition-transform duration-300">
+        <h2 className="text-3xl font-bold text-center text-blue-700 mb-6">
+          🔐 Tourist Login
+        </h2>
 
         {error && (
           <div className="bg-red-100 text-red-700 px-4 py-2 rounded mb-4 text-sm">
@@ -43,15 +89,17 @@ const Login = () => {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-5">
-          {/* Username */}
+          {/* Username/Email */}
           <div className="relative">
             <FaUser className="absolute left-3 top-3 text-blue-500" />
             <input
               type="text"
               name="username"
-              placeholder="Username"
-              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none"
+              placeholder="Email"
+              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none transition-all"
               onChange={handleChange}
+              value={formData.username}
+              autoComplete="username"
               required
             />
           </div>
@@ -63,25 +111,74 @@ const Login = () => {
               type={showPassword ? "text" : "password"}
               name="password"
               placeholder="Password"
-              className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none"
+              className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none transition-all"
               onChange={handleChange}
+              value={formData.password}
+              autoComplete="current-password"
               required
             />
             <div
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-3 cursor-pointer text-blue-500"
+              className="absolute right-3 top-3 cursor-pointer text-blue-500 hover:text-blue-700 transition-colors"
+              title={showPassword ? "Hide password" : "Show password"}
             >
-              {showPassword ? <HiEyeOff /> : <HiEye />}
+              {showPassword ? <HiEyeOff size={20} /> : <HiEye size={20} />}
             </div>
+          </div>
+
+          {/* Remember Me & Forgot Password */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                id="remember"
+                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              />
+              <label
+                htmlFor="remember"
+                className="ml-2 block text-sm text-gray-700"
+              >
+                Remember me
+              </label>
+            </div>
+            <button
+              type="button"
+              className="text-sm text-blue-600 hover:text-blue-800"
+              onClick={() => navigate("/forgot-password")}
+            >
+              Forgot password?
+            </button>
           </div>
 
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-3 rounded-xl text-lg font-semibold hover:bg-blue-700 transition-all duration-300 shadow-md"
+            disabled={loading}
+            className={`w-full flex items-center justify-center gap-2 bg-blue-600 text-white py-3 rounded-xl text-lg font-semibold hover:bg-blue-700 transition-all duration-300 shadow-md ${
+              loading ? "opacity-80 cursor-not-allowed" : ""
+            }`}
           >
-            Login
+            {loading ? (
+              <>
+                <FaSpinner className="animate-spin" />
+                Logging in...
+              </>
+            ) : (
+              "Login"
+            )}
           </button>
+
+          {/* Sign Up Link */}
+          <div className="text-center text-sm text-gray-600">
+            Don't have an account?{" "}
+            <button
+              type="button"
+              className="text-blue-600 hover:text-blue-800 font-medium"
+              onClick={() => navigate("/signup")}
+            >
+              Sign up
+            </button>
+          </div>
         </form>
       </div>
     </div>
