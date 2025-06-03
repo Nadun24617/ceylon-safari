@@ -70,7 +70,7 @@ const Signup = () => {
       }
 
       toast.success("Signup successful! Please login");
-      navigate("/login");
+      navigate("/");
     } catch (error) {
       toast.error(error.message || "Something went wrong. Please try again.");
       console.error("Signup error:", error);

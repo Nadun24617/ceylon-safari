@@ -9,18 +9,23 @@ const Login = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    username: "",
+    email: "",      // renamed from username to email for clarity
     password: "",
   });
 
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);  // optional
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prev) => ({ ...prev, [name]: value }));
     setError("");
+  };
+
+  const handleRememberMeChange = (e) => {
+    setRememberMe(e.target.checked);
   };
 
   const handleSubmit = async (e) => {
@@ -28,8 +33,7 @@ const Login = () => {
     setLoading(true);
     setError("");
 
-    // Basic client-side validation
-    if (!formData.username.trim() || !formData.password.trim()) {
+    if (!formData.email.trim() || !formData.password.trim()) {
       setError("Please fill in all fields");
       setLoading(false);
       return;
@@ -40,7 +44,7 @@ const Login = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          email: formData.username,
+          email: formData.email,
           password: formData.password,
         }),
       });
@@ -48,15 +52,15 @@ const Login = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // Store user data in localStorage or context
+        // Store user data and token
         localStorage.setItem("user", JSON.stringify(data.user));
-        localStorage.setItem("token", data.token); // If using JWT
-        
+        localStorage.setItem("token", data.token);
+
         toast.success("Login successful!", {
           position: "top-right",
           autoClose: 2000,
         });
-        
+
         navigate("/home");
       } else {
         setError(data.message || "Login failed. Please try again.");
@@ -88,17 +92,17 @@ const Login = () => {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-5">
-          {/* Username/Email */}
+        <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+          {/* Email */}
           <div className="relative">
             <FaUser className="absolute left-3 top-3 text-blue-500" />
             <input
-              type="text"
-              name="username"
+              type="email"
+              name="email"
               placeholder="Email"
               className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none transition-all"
               onChange={handleChange}
-              value={formData.username}
+              value={formData.email}
               autoComplete="username"
               required
             />
@@ -132,6 +136,8 @@ const Login = () => {
               <input
                 type="checkbox"
                 id="remember"
+                checked={rememberMe}
+                onChange={handleRememberMeChange}
                 className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
               <label
