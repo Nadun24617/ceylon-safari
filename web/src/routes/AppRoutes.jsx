@@ -13,14 +13,14 @@ import Dashboard from '../pages/Dashboard';
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<Login />} />
+      <Route path="/login" element={<Login />} />
       <Route path="*" element={<PageNotFound />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/map" element={<Map />} />
       <Route path="/accommodation" element={<Accommodation />} />
       <Route path="/weather" element={<Weather />} />
       <Route path="/signup" element={<Signup />} />
-      <Route path="/Home" element={<Home />} />
+      <Route path="/" element={<Home />} />
       <Route path="/ai-recommender" element={<AIRecommender />} />
       <Route path="/admin" element={<Admin />} />
       {/* Add more routes as needed */}

@@ -61,7 +61,7 @@ const Login = () => {
           autoClose: 2000,
         });
 
-        navigate("/home");
+        navigate("/dashboard");
       } else {
         setError(data.message || "Login failed. Please try again.");
         toast.error(data.message || "Login failed", {

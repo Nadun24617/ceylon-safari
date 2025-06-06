@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import Navbar from '../components/Navbar';
 import heroBg from '../assets/hero-bg.jpg';
 import feature1 from '../assets/feature1.jpg';
 import feature2 from '../assets/feature2.jpg';
@@ -62,6 +63,7 @@ const Home = () => {
 
   return (
     <div className="overflow-hidden bg-gray-900 text-gray-100 relative">
+      <Navbar />
       
       {/* Notification - top right */}
       <AnimatePresence>
@@ -104,7 +106,7 @@ const Home = () => {
           className="relative z-10 text-center px-4 max-w-4xl mx-auto"
         >
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            Discover <span className="text-yellow-300">Sri Lanka</span> Like Never Before
+            Discover <span className="text-lightBlue-600 ">Sri Lanka</span> Like Never Before
           </h1>
           <p className="text-xl md:text-2xl mb-8 text-gray-200">
             Your AI-powered travel companion for the Pearl of the Indian Ocean
@@ -113,8 +115,8 @@ const Home = () => {
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link
-                to="/ai"
-                className="inline-block bg-yellow-600 hover:bg-yellow-500 text-gray-900 font-semibold py-3 px-8 rounded-full text-lg transition-all duration-300"
+                to="/signup"
+                className="inline-block bg-lightBlue-600  hover:lightBlue-600  text-white-900 font-semibold py-3 px-8 rounded-full text-lg transition-all duration-300"
               >
                 Create My Plan
               </Link>
@@ -122,7 +124,7 @@ const Home = () => {
 
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link
-                to="/accommodation"
+                to="/signup"
                 className="inline-block border-2 border-gray-300 text-gray-300 hover:bg-white/10 font-semibold py-3 px-8 rounded-full text-lg transition-all duration-300"
               >
                 Explore Stays
@@ -225,15 +227,15 @@ const Home = () => {
         initial={{ opacity: 0, scale: 0.9 }}
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
-        className="py-12 px-4 bg-gradient-to-r from-yellow-500 to-yellow-400 text-gray-900 text-center"
+        className="py-12 px-4 bg-gradient-to-r from-lightBlue-500 to-lightBlue-500 text-white-900 text-center"
       >
         <h2 className="text-3xl font-bold mb-4">Start Planning Your Sri Lanka Adventure Today</h2>
         <p className="mb-6 text-lg max-w-xl mx-auto">
           Join thousands of travelers who have experienced the magic of Sri Lanka with Ceylon Safari.
         </p>
         <Link
-          to="/ai"
-          className="inline-block bg-gray-900 hover:bg-gray-800 text-yellow-400 font-semibold py-3 px-10 rounded-full transition-all duration-300"
+          to="/signup"
+          className="inline-block bg-blue-900 hover:bg-blue-600 text-white-400 font-semibold py-3 px-10 rounded-full transition-all duration-300"
         >
           Create My Plan Now
         </Link>
