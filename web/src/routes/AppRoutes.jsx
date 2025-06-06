@@ -8,12 +8,14 @@ import Signup from '../pages/Signup';
 import Login from '../pages/Login';
 import AIRecommender from '../pages/AIRecommender';
 import Admin from '../pages/Admin';
+import Dashboard from '../pages/Dashboard';
 
 const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Login />} />
       <Route path="*" element={<PageNotFound />} />
+      <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/map" element={<Map />} />
       <Route path="/accommodation" element={<Accommodation />} />
       <Route path="/weather" element={<Weather />} />

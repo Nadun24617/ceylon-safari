@@ -21,7 +21,7 @@ router.post('/signup', async (req, res) => {
       passport, 
       password: hashedPassword 
     });
-    
+
     await newTourist.save();
 
     res.status(201).json({ message: 'Signup successful', user: newTourist });
@@ -32,22 +32,22 @@ router.post('/signup', async (req, res) => {
 });
 
 // Login route
-router.post("/login", async (req, res) => {
+router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 
     const tourist = await Tourist.findOne({ email });
     if (!tourist) {
-      return res.status(400).json({ message: "Invalid email or password" });
+      return res.status(400).json({ message: 'Invalid email or password' });
     }
 
     const isMatch = await bcrypt.compare(password, tourist.password);
     if (!isMatch) {
-      return res.status(400).json({ message: "Invalid email or password" });
+      return res.status(400).json({ message: 'Invalid email or password' });
     }
 
     res.json({ 
-      message: "Login successful", 
+      message: 'Login successful', 
       user: { 
         id: tourist._id, 
         fullName: tourist.fullName, 
@@ -56,9 +56,19 @@ router.post("/login", async (req, res) => {
     });
   } catch (err) {
     console.error('Login error:', err);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// New /data route to get fullName and email of all users
+router.get('/data', async (req, res) => {
+  try {
+    const users = await Tourist.find({}, 'fullName email');
+    res.status(200).json(users);
+  } catch (error) {
+    console.error('Data fetch error:', error);
+    res.status(500).json({ message: 'Failed to fetch user data' });
   }
 });
 
 module.exports = router;
-

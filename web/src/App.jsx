@@ -5,7 +5,6 @@ import AppRoutes from './routes/AppRoutes';
 function App() {
   return (
     <>
-      <Navbar />
       <main className="w-full">
         <AppRoutes />
       </main>
