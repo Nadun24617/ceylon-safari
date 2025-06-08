@@ -9,6 +9,10 @@ import Login from '../pages/Login';
 import AIRecommender from '../pages/AIRecommender';
 import Admin from '../pages/Admin';
 import Dashboard from '../pages/Dashboard';
+import News from '../pages/News';
+import TopAttractions from '../pages/TopAttractions';
+import Cultural from '../pages/Cultural';
+import TravelTips from '../pages/TravelTips';
 
 const AppRoutes = () => {
   return (
@@ -23,7 +27,11 @@ const AppRoutes = () => {
       <Route path="/" element={<Home />} />
       <Route path="/ai-recommender" element={<AIRecommender />} />
       <Route path="/admin" element={<Admin />} />
-      {/* Add more routes as needed */}
+      <Route path="/news" element={<News />} />
+      <Route path="/attractions" element={<TopAttractions />} />
+      <Route path="/cultural" element={<Cultural />} />
+      <Route path="/tips" element={<TravelTips />} />
+     
     </Routes>
   );
 };
