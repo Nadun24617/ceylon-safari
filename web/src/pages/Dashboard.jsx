@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { AppContent } from "../context/AppContext";
-import MemberBar from "../components/MemberBar"; // ✅ Import the extracted sidebar
+import MemberBar from "../components/MemberBar";
+import EventNOtofication from "../components/EventNotification"; // ✅ Import the component
 
 const Dashboard = ({ children }) => {
   const { userdata, setUserData, setIsLoggedin } = useContext(AppContent);
@@ -16,7 +17,7 @@ const Dashboard = ({ children }) => {
 
   return (
     <div className="flex h-screen bg-gradient-to-br from-lightBlue-100 via-white to-lightBlue-200">
-      <MemberBar /> {/* ✅ Use MemberBar here */}
+      <MemberBar />
       <div className="flex-1 flex flex-col">
         <header className="bg-white shadow p-4 flex justify-between items-center relative">
           <h2 className="text-xl font-bold text-lightBlue-600">
@@ -46,6 +47,11 @@ const Dashboard = ({ children }) => {
             </div>
           )}
         </header>
+
+        {/* ✅ Event Notification inserted here */}
+        <div className="p-4">
+          <EventNOtofication />
+        </div>
 
         <main className="p-6 overflow-y-auto h-full">
           {!children && (

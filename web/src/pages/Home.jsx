@@ -123,12 +123,7 @@ const Home = () => {
             </motion.div>
 
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Link
-                to="/signup"
-                className="inline-block border-2 border-gray-300 text-gray-300 hover:bg-white/10 font-semibold py-3 px-8 rounded-full text-lg transition-all duration-300"
-              >
-                Explore Stays
-              </Link>
+              
             </motion.div>
           </div>
         </motion.div>
